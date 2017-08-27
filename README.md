@@ -1,0 +1,2 @@
+# KnodeChatWithRxArrayListAdapter
+KnodeChat implemented with the rxRecyclerViewArrayListAdaper
