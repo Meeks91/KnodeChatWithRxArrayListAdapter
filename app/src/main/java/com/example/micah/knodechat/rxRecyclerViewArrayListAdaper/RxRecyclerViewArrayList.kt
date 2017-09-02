@@ -11,14 +11,16 @@ import io.reactivex.subjects.PublishSubject
  * Created by Micah on 20/08/2017.
  */
 
-
-class RxRecyclerViewArrayList<T>: ArrayList<T>() {
+class RxRecyclerViewArrayList<T>: ArrayList<T> {
 
    private val disposeBag = CompositeDisposable()
    private val dataSubject = PublishSubject.create<RxRecyclerViewArrayListDataUpdateHolder<T>>()
 
+    constructor(): super()
 
-     override fun add(element: T): Boolean {
+    constructor(collection: MutableCollection<T>) : super(collection)
+
+    override fun add(element: T): Boolean {
 
         //send data change to trigger recyclerView update
         dataSubject.onNext(RxRecyclerViewArrayListDataUpdateHolder(size - 1, true))
@@ -42,6 +44,12 @@ class RxRecyclerViewArrayList<T>: ArrayList<T>() {
         super.add(index, element)
     }
 
+    override fun addAll(elements: Collection<T>): Boolean {
+
+        dataSubject.onNext(RxRecyclerViewArrayListDataUpdateHolder(0, true))
+
+        return super.addAll(elements)
+    }
 
     /**
      *
@@ -53,13 +61,14 @@ class RxRecyclerViewArrayList<T>: ArrayList<T>() {
     @Suppress("NON_PUBLIC_CALL_FROM_PUBLIC_INLINE")
     inline fun <reified VH: RecyclerView.ViewHolder> bind(rv: RecyclerView, layout: Int, layoutConfig: LayoutConfig, crossinline onDataChange: (item: VH, element: T) -> Unit): CompositeDisposable  {
 
+        //set up the recyclerView:
         val rvAdapter = RxArrayListRecyclerAdapter<VH, T>(this, layout, VH::class.constructors.first())
 
         rv.adapter = rvAdapter
 
         rv.layoutManager = layoutConfig.generateLayoutManagerUsing(rv.context)
 
-        //send updates to the rvAdapter
+        //send updates to the rvAdapter:
         dataSubject.subscribe { dataUpdateHolder ->
 
             getActivityFrom(rv).runOnUiThread {
@@ -70,7 +79,7 @@ class RxRecyclerViewArrayList<T>: ArrayList<T>() {
         }.addTo(disposeBag)
 
 
-        //receive onBind calls from the rvAdapter
+        //receive onBind calls from the rvAdapter:
         rvAdapter.layoutUpdateSubject.subscribe { update ->
 
             //send the onBind notification to the onDataChange callback

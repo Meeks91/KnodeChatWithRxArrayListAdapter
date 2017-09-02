@@ -1,14 +1,14 @@
 package com.example.micah.knodechat.chatActivity.view
 
-import android.graphics.drawable.GradientDrawable
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.example.micah.knodechat.MyViewHolder
+import com.example.micah.knodechat.ChatMessagesRVViewHolder
 import com.example.micah.knodechat.R
 import com.example.micah.knodechat.dagger.DaggerInjector
 import com.example.micah.knodechat.rxRecyclerViewArrayListAdaper.LayoutConfig
 import com.example.micah.knodechat.rxRecyclerViewArrayListAdaper.Orientation
+import com.example.micah.knodechat.rxRecyclerViewArrayListAdaper.RowType
 import com.example.micah.knodechat.rxRecyclerViewArrayListAdaper.RxRecyclerViewArrayList
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -37,7 +37,7 @@ class ChatActivity : AppCompatActivity(), ChatActivityDelegate {
      */
     fun initMessagesRecyclerView(){
 
-        rxArrayList.bind<MyViewHolder>(messagesRV, R.layout.message_item, LayoutConfig(Orientation.vertical, false, 1)) { vh, message ->
+        rxArrayList.bind<ChatMessagesRVViewHolder>(messagesRV, R.layout.message_item, LayoutConfig(Orientation.vertical, RowType.single, 1)) { vh, message ->
 
             //set the messageTV text with the given message
             vh.messageTV.text = message

@@ -22,10 +22,7 @@ class RxArrayListRecyclerAdapter<VH:  RecyclerView.ViewHolder, T> (val rxRecycle
         return vhConstructor.call(view)
     }
 
-    override fun getItemCount(): Int {
-
-        return rxRecyclerViewArrayList.size
-    }
+    override fun getItemCount(): Int = rxRecyclerViewArrayList.size
 
     /**
      * handles the correct 'notify' method to use to notify the adapter that

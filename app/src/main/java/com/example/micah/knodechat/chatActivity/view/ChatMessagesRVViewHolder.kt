@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.message_item.view.*
 /**
  * Created by Micah on 22/08/2017.
  */
-class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+class ChatMessagesRVViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 
     val messageTV: TextView
 
