@@ -1,8 +1,6 @@
 package com.example.micah.knodechat.dagger.modules
 
-import android.content.Context
 import com.example.micah.knodechat.chatActivity.model.ChatSocketHelper
-import com.example.micah.knodechat.chatActivity.view.ChatActivity
 import com.example.micah.knodechat.chatActivity.view.ChatActivityDelegate
 import com.example.micah.knodechat.chatActivity.view.ChatActivityPresenter
 import dagger.Module
@@ -14,12 +12,7 @@ import dagger.Provides
 
 @Module (includes = arrayOf(SocketIOModule::class))
 
-class ChatActivityModule(val mContext: Context){
-
-    @Provides fun provideContext(): Context {
-
-        return mContext
-    }
+class ChatActivityModule(val mChatActivityDelegate: ChatActivityDelegate){
 
     @Provides fun chatActivityPresenter(chatActivityDelegate: ChatActivityDelegate, chatSocketHelper: ChatSocketHelper): ChatActivityPresenter{
 
@@ -28,6 +21,6 @@ class ChatActivityModule(val mContext: Context){
 
     @Provides fun ChatActivityViewDelegate(): ChatActivityDelegate{
 
-        return mContext as ChatActivityDelegate
+        return mChatActivityDelegate
     }
 }
